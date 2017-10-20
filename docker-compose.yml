@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    volumes:
+      - gogs_db:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: CHANGE_ME
+      MYSQL_DATABASE: CHANGE_ME
+      MYSQL_USER: CHANGE_ME
+      MYSQL_PASSWORD: CHANGE_ME
+
+  gogs:
+    depends_on: 
+    - db
+    image: gogs/gogs:latest
+    volumes:
+      - gogs_data:/data
+    ports:
+      - "3000:3000"
+      - "2222:22"
+    links:
+      - db
+
+volumes:
+  gogs_db:
+  gogs_data:
